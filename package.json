@@ -1,11 +1,11 @@
 {
-  "name": "mendeleyplugin",
-  "version": "1.0.12",
-  "description": "Plugin to fetch mendeley api",
+  "name": "waaumendeleyplugin",
+  "version": "1.0.1",
+  "description": "Plugin to fetch mendeley api. Heavily inspired from https://github.com/collab-uniba/wp-mendeleyplugin",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Matteo Monti <mmonti@gmail.com>",
+  "author": "Matteo Monti <mmonti@gmail.com>, Davide Parisi, Nicola Musicco",
   "license": "unlicensed",
   "devDependencies": {
     "grunt": "^0.4.5",
