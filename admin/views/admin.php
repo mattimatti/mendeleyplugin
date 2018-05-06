@@ -48,11 +48,17 @@ date_default_timezone_set( !empty(get_option( 'timezone_string' )) ? get_option(
 		$html .= '<br/>';
 		$html .= '<form action="' . admin_url( "admin.php" ) . '" method="post">';
 		$html .= '<input type="hidden" name="action" value="import_publications"/>';
-// 		$html .= '<input type="submit" value="Import Publications" class="button-primary" />';
-		$html .= '<input type="submit" value="Request Token" class="button-primary" />';
+		$html .= '<input type="submit" value="Index all Publications in group" class="button-primary" />';
+// 		$html .= '<input type="submit" value="Request Token" class="button-primary" />';
 		$html .= '</form>';
+		
 		if ( isset( $options['last-import'] ) ) {
-			$html .= '<p>Last import: ' . $options['last-import'] . '</p>';
+			$html .= '<p>Last indexe: ' . $options['last-import'] . '</p>';
+			$html .= '<p>Indexed Publications: ' . $options['indexed-count'] . '</p>';
+		}
+
+		if ( isset( $options['last-import-error'] ) ) {
+			$html .= '<p>Last import: ' . $options['last-import-error'] . '</p>';
 		}
 
 
@@ -61,7 +67,7 @@ date_default_timezone_set( !empty(get_option( 'timezone_string' )) ? get_option(
 		$html .= '<p><em>When API key are stored in the db you can request your <b>Mendeley access token</b></em></p>';
 		$html .= '<form action="' . admin_url( "admin.php" ) . '" method="post">';
 		$html .= '<input type="hidden" name="action" value="request_token"/>';
-		$html .= '<input type="submit" value="Request Token" class="button-primary" ';
+		$html .= '<input type="submit" value="Request Access token" class="button-primary" ';
 		$html .= ( $options['client_id'] == '' || $options['client_secret'] == '' ) ? "disabled" : "";
 		$html .= '" />';
 		$html .= '</form>';

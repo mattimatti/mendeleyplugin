@@ -7,7 +7,6 @@
  * @author    Matteo Monti, credits to Davide Parisi, Nicola Musicco
  * @copyright 2014 -2018
  */
-
 class WaauMendeleyPlugin
 {
 
@@ -332,6 +331,19 @@ class WaauMendeleyPlugin
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
         
+        
+        // remove all settings..
+        self::get_instance()->update_options(array());
+        
+        $defaults = array(
+            'client_id' => '',
+            'client_secret' => '',
+            'group_id' => '',
+            'cache' => false
+        );
+        
+        self::get_instance()->update_options($defaults);
+        
         $sql = "TRUNCATE TABLE $table_name;";
         
         require_once (ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -362,18 +374,23 @@ class WaauMendeleyPlugin
          $GLOBALS['wpdb']->query("DROP TABLE `" . $GLOBALS['wpdb']->prefix . "TABLE_NAME`");
          $GLOBALS['wpdb']->query("OPTIMIZE TABLE `" . $GLOBALS['wpdb']->prefix . "options`");
          */
-        $table_name = self::get_instance()->get_db_tablename();
-        $plugin_slug = self::get_instance()->get_plugin_slug();
-        
-        global $wpdb;
-        $charset_collate = $wpdb->get_charset_collate();
-        
-        $sql = "DROP TABLE IF EXISTS $table_name;";
-        
-        require_once (ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql);
-        
-        delete_option($plugin_slug . '-db_version');
+        try {
+            
+            $table_name = self::get_instance()->get_db_tablename();
+            $plugin_slug = self::get_instance()->get_plugin_slug();
+            
+            global $wpdb;
+            $charset_collate = $wpdb->get_charset_collate();
+            
+            $sql = "DROP TABLE IF EXISTS $table_name;";
+            
+            require_once (ABSPATH . 'wp-admin/includes/upgrade.php');
+            dbDelta($sql);
+            
+            delete_option($plugin_slug . '-db_version');
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
     }
 
     /**
@@ -717,7 +734,7 @@ class WaauMendeleyPlugin
      * 
      * @param array $data
      */
-    private function update_cache($data, $cacheid = 'cache')
+    public function update_cache($data, $cacheid = 'cache')
     {
         $options = $this->get_options();
         

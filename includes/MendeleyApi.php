@@ -169,6 +169,10 @@ class MendeleyApi
         // limit to the group..
         $params['group_id'] = $options['group_id'];
         
+        if (! isset($options['group_id'])) {
+            throw new Exception("Group Id Must be specified");
+        }
+        
         // $publications = $this->get_group_publications($params);
         $publications = $this->get_group_publications_recursive($params);
         
@@ -207,6 +211,9 @@ class MendeleyApi
             
             $wpdb->query("INSERT INTO $table_name (documentid, fullsearch, serialized) VALUES ('" . $documentid . "','" . $fullsearch . "','" . $serialized . "')");
         }
+        
+        
+        return $publications;
     }
 
     /**
@@ -300,6 +307,24 @@ class MendeleyApi
     }
 
     /**
+     * 
+     * @return mixed
+     */
+    public function load_groups()
+    {
+        $url = self::API_ENDPOINT . 'groups';
+        $data = $this->fetch($url);
+        
+        if ($data['code'] = 200) {
+            return $data['result'];
+        }else{
+            throw new Exception($data['result']);
+        }
+        
+        return array();
+    }
+
+    /**
      * TODO: check if can be done with the oauth client
      * @param string $file_id
      * 
@@ -382,8 +407,11 @@ class MendeleyApi
     {
         $this->options = $options;
         
-        $token_data_array = $options['access_token']['result'];
+        if (! isset($options['access_token'])) {
+            return "you must set up mendeley plugin before using this shortcode...";
+        }
         
+        $token_data_array = $options['access_token']['result'];
         if (! isset($token_data_array)) {
             return "you must set up mendeley plugin before using this shortcode...";
         }

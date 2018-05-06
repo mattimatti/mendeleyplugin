@@ -41,7 +41,7 @@ module.exports = function(grunt) {
 		    },
 		    app : {
 			files : {
-			    './public/assets/js/dist/app.min.js' : [ 'js/dist/app.js' ]
+			    './public/assets/js/dist/app.min.js' : [ './public/assets/js/dist/app.js' ]
 			}
 		    }
 		},
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
 			    paths : [ "css/src" ]
 			},
 			files : {
-			    "./public/assets/css/dist/app.css" : "css/src/app.less"
+			    "./public/assets/css/dist/app.css" : "./public/assets/css/src/app.less"
 			}
 		    }
 		},
