@@ -2,10 +2,11 @@
 use OAuth2\Client;
 
 /**
- * 
- * 
- * @author mattimatti
+ * Waau Mendeley Plugin
  *
+ * @package   MendeleyApi
+ * @author    Matteo Monti, credits to Davide Parisi, Nicola Musicco
+ * @copyright 2014 -2018
  */
 class MendeleyApi
 {

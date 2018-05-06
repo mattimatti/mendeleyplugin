@@ -6,7 +6,7 @@
  * The User Interface to the end user.
  *
  * @package   WaauMendeleyPlugin
- * @author    Davide Parisi <davideparisi@gmail.com>
+ * @author    Matteo Monti, credits to Davide Parisi, Nicola Musicco
  * @license   GPL-2.0+
  * @link      http://example.com
  * @copyright 2014 --

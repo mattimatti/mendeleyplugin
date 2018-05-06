@@ -1,13 +1,11 @@
 <?php
 
 /**
- * Collab Mendeley Plugin
+ * Waau Mendeley Plugin
  *
  * @package   WaauMendeleyPlugin
- * @author    Davide Parisi <davideparisi@gmail.com>
- * @license   GPL-2.0+
- * @link      http://example.com
- * @copyright 2014 --
+ * @author    Matteo Monti, credits to Davide Parisi, Nicola Musicco
+ * @copyright 2014 -2018
  */
 
 /**
@@ -18,7 +16,7 @@
  * functionality, then refer to `class-collab-mendeley-plugin-admin.php`
  *
  * @package WaauMendeleyPlugin
- * @author  Davide Parisi <davideparisi@gmail.com>
+ * @author  Matteo Monti, credits to Davide Parisi, Nicola Musicco
  *
  */
 

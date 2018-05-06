@@ -1,24 +1,11 @@
 <?php
 
 /**
- * Collab Mendeley Plugin
+ * Waau Mendeley Plugin
  *
  * @package   WaauMendeleyPluginAdmin
- * @author    Davide Parisi <davideparisi@gmail.com>
- * @license   GPL-2.0+
- * @link      http://example.com
- * @copyright 2014 --
- */
-
-/**
- * Plugin class. This class should ideally be used to work with the
- * administrative side of the WordPress site.
- *
- * If you're interested in introducing public-facing
- * functionality, then refer to `class-collab-mendeley-plugin.php`
- *
- * @package WaauMendeleyPluginAdmin
- * @author  Davide Parisi <davideparisi@gmail.com>
+ * @author    Matteo Monti, credits to Davide Parisi, Nicola Musicco
+ * @copyright 2014 -2018
  */
 class WaauMendeleyPluginAdmin
 {
@@ -299,7 +286,7 @@ class WaauMendeleyPluginAdmin
          *
          *        Administration Menus: http://codex.wordpress.org/Administration_Menus
          */
-        $this->plugin_screen_hook_suffix = add_options_page(__('Collab Mendeley Plugin', $this->plugin_slug), __('Mendeley Settings', $this->plugin_slug), 'manage_options', $this->plugin_slug, array(
+        $this->plugin_screen_hook_suffix = add_options_page(__('Waau Mendeley Plugin', $this->plugin_slug), __('Mendeley Settings', $this->plugin_slug), 'manage_options', $this->plugin_slug, array(
             $this,
             'display_plugin_admin_page'
         ));
