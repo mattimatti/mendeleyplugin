@@ -8,19 +8,6 @@
  * @copyright 2014 -2018
  */
 
-/**
- * Plugin class. This class should ideally be used to work with the
- * public-facing side of the WordPress site.
- *
- * If you're interested in introducing administrative or dashboard
- * functionality, then refer to `class-collab-mendeley-plugin-admin.php`
- *
- * @package WaauMendeleyPlugin
- * @author  Matteo Monti, credits to Davide Parisi, Nicola Musicco
- *
- */
-
-// date_default_timezone_set( get_option( 'timezone_string' ) != '' ? get_option( 'timezone_string' ) : 'Europe/Rome' );
 class WaauMendeleyPlugin
 {
 
@@ -46,7 +33,7 @@ class WaauMendeleyPlugin
      *
      * @var      string
      */
-    protected $plugin_slug = 'collab-mendeley-plugin';
+    protected $plugin_slug = 'waau-mendeley-plugin';
 
     /**
      *
@@ -55,7 +42,7 @@ class WaauMendeleyPlugin
      *
      * @var      string
      */
-    protected $db_version = '3.0';
+    protected $db_version = '1.0';
 
     /**
      * Instance of this class.
@@ -164,7 +151,7 @@ class WaauMendeleyPlugin
     public function get_db_tablename()
     {
         global $wpdb;
-        return $wpdb->prefix . "mendeleycache";
+        return $wpdb->prefix . "mendeleydocindex";
     }
 
     /**
@@ -311,7 +298,6 @@ class WaauMendeleyPlugin
             if ($db_version != $old_version) {
                 self::single_uninstall();
             }
-            return;
         }
         
         $table_name = self::get_instance()->get_db_tablename();
