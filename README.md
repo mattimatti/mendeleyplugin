@@ -2,7 +2,7 @@
 
 #### Releases
 
-Le releases nel repo github sono incrementali e pronte per essere pubblicate su qualsiasi stanza di wordpress.
+Le  [releases](../../releases) nel repo github sono incrementali e pronte per essere pubblicate su qualsiasi stanza di wordpress.
 Non contengono le dipendenze di dev.
 
 
@@ -26,17 +26,19 @@ A questo puntosi può passare al front.
 
 Questo plugin funziona semplicemente inserendo uno shortcode in una qualsiasi pagina.
 
-[mendeleysearch]
+[mendeleysearch] [qui](../master/public/WaauMendeleyPlugin.php#L452)
 
 Lo short inserisce un form con un campo di ricerca sensibile al evento keyup che lancia le richieste via ajax a un servizio esposto dal plugin
 
 Il servizio ricerca nei campi indicizzati precedentemente e ritorna i risultati in json.
 
-il codice html del front end si trova nel file gui.html con dei templates di tipo underscore ref: http://2ality.com/2012/06/underscore-templates.html
+il codice html del front end si trova nel file [gui.html](../master/includes/gui.html) con dei templates di tipo underscore 
 
-viene iniettato anche un js che dipende da underscorejs e jquery 
+[referenza templates underscore](http://2ality.com/2012/06/underscore-templates.html)
 
-viene iniettato anche un css (compilato da less)
+viene iniettato anche un [js](../master/public/assets/js/dist/app.js) che dipende da [underscorejs](http://underscorejs.org/) e jquery 
+
+viene iniettato anche un [css](../master/public/assets/css/dist/app.css) (compilato da less)
 
 
 
