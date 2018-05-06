@@ -5,7 +5,7 @@ wordpress
 provision
 wp-cli
 wp-cli.yml
-dist
+./dist
 vendor
 
 ansible.cfg
