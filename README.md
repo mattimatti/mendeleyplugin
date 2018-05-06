@@ -1,9 +1,14 @@
 ### Waau Mendeley Plugin
 
+#### Releases
+
+Le releases nel repo github sono incrementali e pronte per essere pubblicate su qualsiasi stanza di wordpress.
+Non contengono le dipendenze di dev.
+
 
 #### Backend
 
-Il backend va installato e poi configurato attraverso la sua settings page dove dovete inserire i dati di un applicazione registrata su dev.mendeley con le credenziali di [florence].
+Una volta installato il plugin va poi configurato attraverso la sua settings page dove dovete inserire i dati di un applicazione registrata su dev.mendeley con le credenziali di [florence].
 
 Una volta inserite le credenziali come speificato nel pannello di admin, dovete premere il bottone di richiesta di un access token.
 Una volta ottenuto correttamente il token (scadrà dopo un ora), potrete caricare i gruppi e selezionare il gruppo INNOTIO
@@ -32,14 +37,6 @@ il codice html del front end si trova nel file gui.html con dei templates di tip
 viene iniettato anche un js che dipende da underscorejs e jquery 
 
 viene iniettato anche un css (compilato da less)
-
-
-#### Releases
-
-Le releases nel repo github sono incrementali e pronte per essere pubblicate su qualsiasi stanza di wordpress.
-Non contengono le dipendenze di dev.
-
-
 
 
 
