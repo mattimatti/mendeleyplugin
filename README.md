@@ -42,9 +42,9 @@ viene iniettato anche un [css](../master/public/assets/css/dist/app.css) (compil
 
 #### Referenze
 
-[referenza templates underscore](http://2ality.com/2012/06/underscore-templates.html)
-[mendeley api documents](https://dev.mendeley.com/methods/#retrieving-documents)
-[mendeley api groups](https://dev.mendeley.com/methods/#retrieving-groups)
-[collab mendeley plugin](https://github.com/collab-uniba/wp-mendeleyplugin)
-[mendeley](https://www.mendeley.com/)
+* [referenza templates underscore](http://2ality.com/2012/06/underscore-templates.html)
+* [mendeley api documents](https://dev.mendeley.com/methods/#retrieving-documents)
+* [mendeley api groups](https://dev.mendeley.com/methods/#retrieving-groups)
+* [collab mendeley plugin](https://github.com/collab-uniba/wp-mendeleyplugin)
+* [mendeley](https://www.mendeley.com/)
 
