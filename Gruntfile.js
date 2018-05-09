@@ -112,6 +112,7 @@ module.exports = function(grunt) {
 	    }
 	},
 
+	
 	availabletasks : {
 	    tasks : {
 		options : {
@@ -120,7 +121,18 @@ module.exports = function(grunt) {
 		}
 	    }
 	},
-
+	
+	'git-archive': {
+            archive: {
+                options: {
+                    'output'  : 'mendeleyplugin.zip',
+                    'tree-ish': 'master',
+                    'worktree-attributes'   : true,
+                    'format'  : 'zip'
+                }
+            }
+        },
+        
 	// ftpush : {
 	// build : {
 	// auth : {

@@ -12,7 +12,7 @@
  * @copyright 2014 --
  */
 
-date_default_timezone_set( !empty(get_option( 'timezone_string' )) ? get_option( 'timezone_string' ) : 'Europe/Rome' );
+//date_default_timezone_set( !empty(get_option( 'timezone_string' )) ? get_option( 'timezone_string' ) : 'Europe/Rome' );
 
 ?>
 
