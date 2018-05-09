@@ -93,6 +93,11 @@ class WaauMendeleyPluginAdmin
             $this,
             'import_group_publications'
         ));
+
+        add_action('admin_action_reset_all_data', array(
+            $this,
+            'reset_all_data'
+        ));
         
         // add contextual help
         add_filter('contextual_help', array(
@@ -201,6 +206,10 @@ class WaauMendeleyPluginAdmin
         return apply_filters('default_keys_options', $defaults);
     }
 
+    
+    /**
+     * 
+     */
     public function initialize_options()
     {
         
@@ -226,12 +235,17 @@ class WaauMendeleyPluginAdmin
             'Insert the client secret'
         ));
         
-        add_settings_field('group_id', 'Group Id', array(
-            $this,
-            'demo_select_display'
-        ), $this->plugin_slug, 'waau_mendeley_settings_section', array(
-            'Insert the group id'
-        ));
+        $groups = get_option($this->plugin_slug . '-groups');
+        
+        if($groups){
+            add_settings_field('group_id', 'Group Id', array(
+                $this,
+                'demo_select_display'
+            ), $this->plugin_slug, 'waau_mendeley_settings_section', array(
+                'Insert the group id'
+            ));
+        }
+        
         
         // add_settings_field("demo-select", "Demo Select Box", "demo_select_display", "demo", "section");
         
@@ -241,17 +255,20 @@ class WaauMendeleyPluginAdmin
         ));
     }
 
+    
+    /**
+     * 
+     */
     function demo_select_display()
     {
         $options = $this->plugin->get_options();
-        
             
-            $groups = get_option($this->plugin_slug . '-groups');
-            $gid = (isset($options['group_id'])) ? $options['group_id'] : '';
+        $groups = get_option($this->plugin_slug . '-groups');
+        $gid = (isset($options['group_id'])) ? $options['group_id'] : '';
             
-            ?>
+?>
 <select name="<?php echo $this->plugin_slug; ?>[group_id]">
-	<option value="">Select a group</option>
+<option value="">Select a group</option>
 <?php
             if ($groups && is_array($groups)) {
                 foreach ($groups as $group) {
@@ -266,7 +283,8 @@ class WaauMendeleyPluginAdmin
             }
             ?>
 </select>
-<a href="<?php admin_url( "admin.php" ); ?>?action=load_groups">Load groups</a>
+
+<!-- <a href="<?php admin_url( "admin.php" ); ?>?action=load_groups">Load groups</a> -->
 
 <?php
         
@@ -274,7 +292,7 @@ class WaauMendeleyPluginAdmin
 
     public function options_callback()
     {
-        echo '<p class="description">Enter the <code>client ID</code> and <code>client secret</code> you have got from registering this plugin on <a href="http://dev.mendeley.com">Mendeley</a> (see contextual help tab above)</p>';
+        echo '<p class="description">Enter the <code>client ID</code> and <code>client secret</code> you have got from registering this plugin on <a  target="_blank" href="https://dev.mendeley.com/myapps.html">Mendeley</a> (see contextual help tab above)</p>';
     }
 
     public function client_id_input_callback($args)
@@ -465,6 +483,33 @@ class WaauMendeleyPluginAdmin
         $client->set_client_access_token($token);
         
         return $client;
+    }
+    
+    
+    public function reset_all_data(){
+        
+        $url = $_SERVER['HTTP_REFERER'];
+        
+        $options = $this->plugin->get_options();
+        
+        $client = $this->getClient(true);
+        
+        $client->reset_group_publications();
+        
+        $this->plugin->update_options(array(
+            'client_id' => '',
+            'client_secret' => '',
+            'group_id' => '',
+            'cache' => false
+        ));
+        
+        
+        update_option($this->plugin_slug . '-groups', null);
+        
+        
+        wp_redirect($url);
+        
+        exit();
     }
 
     /**

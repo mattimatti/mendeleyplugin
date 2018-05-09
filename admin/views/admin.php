@@ -20,7 +20,8 @@
 	<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 
 
-	<label for="callback-url"><b>Redirect url</b> (<em>Register a new app at dev.mendely.com and enter this when asked for a redirect URL</em>)</label><br/>
+	<label for="callback-url"><b>Redirect url</b> (<em>Register a new app at <a target="_blank" href="https://dev.mendeley.com/myapps.html">Mendeley</a> and enter this when asked for a redirect URL</em>)</label><br/>
+	<br/>
 	<input type="text" value="<?php echo $this->callback_url; ?>" readonly size="85"/>
 
 	<form action="options.php" method="post">
@@ -33,8 +34,10 @@
 	<?php
 
 	$options = get_option( $this->plugin_slug );
+	$groups = get_option($this->plugin_slug . '-groups');
 
 	if ( isset( $options['access_token'] ) ) {
+	    
 		$access_token_data = $options['access_token']['result'];
 		$expires_at        = $options['expire_time'];
 
@@ -46,31 +49,44 @@
 		$html .= '<p class="' . ( ( time() < $expires_at ) ? "token-updated" : "token-expired" ) . '"><b>Expire time: </b>' . date( 'd-n-Y H:i:s', $expires_at ) . '</p>';
 
 		$html .= '<br/>';
-		$html .= '<form action="' . admin_url( "admin.php" ) . '" method="post">';
-		$html .= '<input type="hidden" name="action" value="import_publications"/>';
-		$html .= '<input type="submit" value="Index all Publications in group" class="button-primary" />';
-// 		$html .= '<input type="submit" value="Request Token" class="button-primary" />';
-		$html .= '</form>';
 		
-		if ( isset( $options['last-import'] ) ) {
-			$html .= '<p>Last indexe: ' . $options['last-import'] . '</p>';
-			$html .= '<p>Indexed Publications: ' . $options['indexed-count'] . '</p>';
+		$html .= '<form action="' . admin_url( "admin.php" ) . '" method="post">';
+		
+		if($groups){
+		    if ( isset( $options['group_id'] ) ) {
+    		  $html .= '<button type="submit" name="action"  value="import_publications" class="button-primary">Index all Publications in group</button>';
+    		  $html .= '&nbsp;&nbsp;<span><button type="submit" name="action"  value="reset_all_data" class="button-primary">Reset all data</button></span>';
+		    }
+    		if ( isset( $options['last-import'] ) ) {
+    			$html .= '<p></p><p class="token-updated">Last indexed: ' . $options['last-import'] . '</p>';
+    			$html .= '<p class="token-updated">Indexed Publications: ' . $options['indexed-count'] . '</p>';
+    		}
+    
+    		if ( isset( $options['last-import-error'] ) ) {
+    			$html .= '<p class="token-expired">Last import: ' . $options['last-import-error'] . '</p>';
+    		}
+		 } else {
+		     
+		  $html .= '<button type="submit" name="action"  value="load_groups" class="button-primary">Load groups</button>';
+		
+    		
 		}
 
-		if ( isset( $options['last-import-error'] ) ) {
-			$html .= '<p>Last import: ' . $options['last-import-error'] . '</p>';
-		}
-
+		$html .= '</form>';
 
 	} else {
-		$html = '<p><em>No access token requested for this account</em></p>';
+		$html = '<p><em>No access token have been requested for this account</em></p>';
 		$html .= '<p><em>When API key are stored in the db you can request your <b>Mendeley access token</b></em></p>';
+		
 		$html .= '<form action="' . admin_url( "admin.php" ) . '" method="post">';
+		
 		$html .= '<input type="hidden" name="action" value="request_token"/>';
 		$html .= '<input type="submit" value="Request Access token" class="button-primary" ';
 		$html .= ( $options['client_id'] == '' || $options['client_secret'] == '' ) ? "disabled" : "";
 		$html .= '" />';
+		
 		$html .= '</form>';
+		
 	}
 	echo $html;
 	?>

@@ -149,6 +149,20 @@ class MendeleyApi
             'rel' => $matches[2]
         ];
     }
+    
+    
+    /**
+     * 
+     */
+    public function reset_group_publications()
+    {
+        global $wpdb;
+        
+        $table_name = WaauMendeleyPlugin::get_instance()->get_db_tablename();
+        
+        // clanup the table
+        $wpdb->query("TRUNCATE $table_name");
+    }
 
     /**
      * Load all the publications 
@@ -298,6 +312,9 @@ class MendeleyApi
         return $documents;
     }
 
+    
+    
+    
     public function get_document($id)
     {
         $url = self::API_ENDPOINT . 'documents/' . $id;

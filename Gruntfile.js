@@ -56,7 +56,7 @@ module.exports = function(grunt) {
 	},
 
 	clean : {
-	    contents : [ './wordpress/wp-content/plugins/mmmendeleyplugin/*' ],
+	    contents : [ './wordpress/wp-content/plugins/mendeleyplugin/*' ],
 	},
 
 	copy : {
@@ -65,14 +65,14 @@ module.exports = function(grunt) {
 		cwd : '.',
 		src : [ '*.php', 'img/**/*', 'public/**/*', 'includes/**/*', 'languages/**/*', 'admin/**/*',
 			'assets/**/*', 'doc/**/*' ],
-		dest : './wordpress/wp-content/plugins/mmmendeleyplugin/',
+		dest : './wordpress/wp-content/plugins/mendeleyplugin/',
 	    },
 	},
 
 	compress : {
 	    main : {
 		options : {
-		    archive : './wordpress/wp-content/plugins/mmmendeleyplugin.zip'
+		    archive : './wordpress/wp-content/plugins/mendeleyplugin.zip'
 		},
 		files : [ {
 		    expand : true,

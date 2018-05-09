@@ -13,5 +13,8 @@
 	<li>Click on request token</li>
 </ol>
 <p>
-	<em>Once you have token, Import Publications button, save on local cache documents details from your <b>Mendeley account</b></em>
+	<em>Once you have the token, click Import Publications button, save on local cache documents details from your <b>Mendeley Group</b></em>
+</p>
+<p>
+	Then include the slug <code>[mendeleysearch]</code> in any of your pages.
 </p>
