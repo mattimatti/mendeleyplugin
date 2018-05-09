@@ -140,7 +140,7 @@ module.exports = function(grunt) {
 	// },
 
 	"regex-replace" : {
-	    verz : {
+	    rootplugin : {
 		src : [ './waau-mendeley-plugin.php' ],
 		actions : [ {
 		    name : 'version',
@@ -149,7 +149,7 @@ module.exports = function(grunt) {
 		    flags : 'mg'
 		} ]
 	    },
-	    verz : {
+	    pluginv : {
 		src : [ './public/WaauMendeleyPlugin.php' ],
 		actions : [ {
 		    name : 'version2',
