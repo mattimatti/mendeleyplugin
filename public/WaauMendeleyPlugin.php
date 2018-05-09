@@ -17,7 +17,7 @@ class WaauMendeleyPlugin
      *
      * @var     string
      */
-    const VERSION = '1.0.31';
+    const VERSION = '1.0.32';
 
     /**
      *
@@ -343,8 +343,9 @@ class WaauMendeleyPlugin
         
         self::get_instance()->update_options($defaults);
         
-        $sql = "TRUNCATE TABLE $table_name;";
+        delete_option($plugin_slug . '-groups');
         
+        $sql = "TRUNCATE TABLE $table_name;";
         require_once (ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql);
         
