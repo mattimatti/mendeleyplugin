@@ -1,6 +1,6 @@
 {
   "name": "waaumendeleyplugin",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "description": "Plugin to fetch mendeley api. Heavily inspired from https://github.com/collab-uniba/wp-mendeleyplugin",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

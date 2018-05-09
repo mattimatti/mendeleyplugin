@@ -17,7 +17,7 @@ class WaauMendeleyPlugin
      *
      * @var     string
      */
-    const VERSION = '1.0.25';
+    const VERSION = '1.0.26';
 
     /**
      *
