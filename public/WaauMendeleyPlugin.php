@@ -17,7 +17,7 @@ class WaauMendeleyPlugin
      *
      * @var     string
      */
-    const VERSION = '1.0.26';
+    const VERSION = '1.0.27';
 
     /**
      *
@@ -414,8 +414,8 @@ class WaauMendeleyPlugin
      */
     public function enqueue_styles()
     {
-        // wp_register_style($this->plugin_slug . 'plugin_css', MENDELEY__PLUGIN_URL . 'css/dist/app.min.css', array(), self::VERSION, 'all');
-        wp_register_style($this->plugin_slug . 'plugin_css', MENDELEY__PLUGIN_URL . 'css/dist/app.css', array(), self::VERSION, 'screen');
+        // wp_register_style($this->plugin_slug . 'plugin_css', MENDELEY__PLUGIN_URL . 'public/assets/css/dist/app.min.css', array(), self::VERSION, 'all');
+        wp_register_style($this->plugin_slug . 'plugin_css', MENDELEY__PLUGIN_URL . 'public/assets/css/dist/app.css', array(), self::VERSION, 'screen');
     }
 
     /**
@@ -425,12 +425,12 @@ class WaauMendeleyPlugin
      */
     public function enqueue_scripts()
     {
-        wp_register_script($this->plugin_slug . '_plugin_js', MENDELEY__PLUGIN_URL . 'js/dist/app.js', array(
+        wp_register_script($this->plugin_slug . '_plugin_js', MENDELEY__PLUGIN_URL . 'public/assets/js/dist/app.js', array(
             'jquery'
         ), self::VERSION);
         
         //
-        wp_register_script($this->plugin_slug . '_underscore', MENDELEY__PLUGIN_URL . 'js/dist/underscore-min.js', array(), self::VERSION);
+        wp_register_script($this->plugin_slug . '_underscore', MENDELEY__PLUGIN_URL . 'public/assets/js/dist/underscore-min.js', array(), self::VERSION);
     }
 
     /*----------------------------------------------------------------------------/
