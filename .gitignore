@@ -17,6 +17,7 @@ Vagrantfile
 .settings
 .settings*
 .project
+.phpintel
 .buildpath
 
 phpunit.xml
