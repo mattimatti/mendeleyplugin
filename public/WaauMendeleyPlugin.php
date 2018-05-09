@@ -17,7 +17,7 @@ class WaauMendeleyPlugin
      *
      * @var     string
      */
-    const VERSION = '1.0.28';
+    const VERSION = '1.0.29';
 
     /**
      *
@@ -295,7 +295,7 @@ class WaauMendeleyPlugin
         if ($old_version) {
             // if we have a version change.. DROP and create
             if ($db_version != $old_version) {
-                self::single_uninstall();
+                self::single_deactivate();
             }
         }
         
@@ -331,7 +331,6 @@ class WaauMendeleyPlugin
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
         
-        
         // remove all settings..
         self::get_instance()->update_options(array());
         
@@ -348,6 +347,8 @@ class WaauMendeleyPlugin
         
         require_once (ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql);
+        
+        self::single_uninstall();
     }
 
     /**
@@ -357,41 +358,18 @@ class WaauMendeleyPlugin
      */
     public static function single_uninstall()
     {
-        /**
-         // @TODO: delete all transient, options and files you may have added
-         delete_transient('TRANSIENT_NAME');
-         delete_option('OPTION_NAME');
-         // info: remove custom file directory for main site
-         $upload_dir = wp_upload_dir();
-         $directory = $upload_dir['basedir'] . DIRECTORY_SEPARATOR . "CUSTOM_DIRECTORY_NAME" . DIRECTORY_SEPARATOR;
-         if (is_dir($directory)) {
-         foreach (glob($directory . '*.*') as $v) {
-         unlink($v);
-         }
-         rmdir($directory);
-         }
-         // info: remove and optimize tables
-         $GLOBALS['wpdb']->query("DROP TABLE `" . $GLOBALS['wpdb']->prefix . "TABLE_NAME`");
-         $GLOBALS['wpdb']->query("OPTIMIZE TABLE `" . $GLOBALS['wpdb']->prefix . "options`");
-         */
-        /**
-        try {
-            
-            $table_name = self::get_instance()->get_db_tablename();
-            $plugin_slug = self::get_instance()->get_plugin_slug();
-            
-            global $wpdb;
-            $charset_collate = $wpdb->get_charset_collate();
-            
-            $sql = "DROP TABLE IF EXISTS $table_name;";
-            
-            require_once (ABSPATH . 'wp-admin/includes/upgrade.php');
-            dbDelta($sql);
-            
-            delete_option($plugin_slug . '-db_version');
-        } catch (Exception $ex) {
-            echo $ex->getMessage();
-        }*/
+        $table_name = self::get_instance()->get_db_tablename();
+        $plugin_slug = self::get_instance()->get_plugin_slug();
+        
+        global $wpdb;
+        $charset_collate = $wpdb->get_charset_collate();
+        
+        $sql = "DROP TABLE IF EXISTS $table_name;";
+        
+        require_once (ABSPATH . 'wp-admin/includes/upgrade.php');
+        dbDelta($sql);
+        
+        delete_option($plugin_slug . '-db_version');
     }
 
     /**
