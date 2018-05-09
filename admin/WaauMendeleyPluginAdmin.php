@@ -72,7 +72,7 @@ class WaauMendeleyPluginAdmin
         ));
         
         // Add an action link pointing to the options page.
-        $plugin_basename = plugin_basename(plugin_dir_path(realpath(dirname(__FILE__))) . $this->plugin_slug . '.php');
+        $plugin_basename = plugin_basename(MENDELEY__PLUGIN_DIR . $this->plugin_slug . '.php');
         
         add_filter('plugin_action_links_' . $plugin_basename, array(
             $this,
@@ -325,14 +325,8 @@ class WaauMendeleyPluginAdmin
     public function add_plugin_admin_menu()
     {
         
-        /*
-         * Add a settings page for this plugin to the Settings menu.
-         *
-         * NOTE:  Alternative menu locations are available via WordPress administration menu functions.
-         *
-         *        Administration Menus: http://codex.wordpress.org/Administration_Menus
-         */
-        $this->plugin_screen_hook_suffix = add_options_page(__('Waau Mendeley Plugin', $this->plugin_slug), __('Mendeley Settings', $this->plugin_slug), 'manage_options', $this->plugin_slug, array(
+        // Add a settings page for this plugin to the Settings menu.
+        $this->plugin_screen_hook_suffix = add_options_page('Waau Mendeley Plugin', 'Mendeley Settings', 'manage_options', $this->plugin_slug, array(
             $this,
             'display_plugin_admin_page'
         ));
@@ -348,7 +342,7 @@ class WaauMendeleyPluginAdmin
         if (isset($_GET['code'])) {
             $this->store_access_token($_GET['code']);
         }
-        include_once ('views/admin.php');
+        include_once (MENDELEY__PLUGIN_DIR.'views/admin.php');
     }
 
     /**
