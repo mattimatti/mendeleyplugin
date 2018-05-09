@@ -17,7 +17,7 @@ class WaauMendeleyPlugin
      *
      * @var     string
      */
-    const VERSION = '1.0.21';
+    const VERSION = '1.0.22';
 
     /**
      *
@@ -374,6 +374,7 @@ class WaauMendeleyPlugin
          $GLOBALS['wpdb']->query("DROP TABLE `" . $GLOBALS['wpdb']->prefix . "TABLE_NAME`");
          $GLOBALS['wpdb']->query("OPTIMIZE TABLE `" . $GLOBALS['wpdb']->prefix . "options`");
          */
+        /**
         try {
             
             $table_name = self::get_instance()->get_db_tablename();
@@ -390,7 +391,7 @@ class WaauMendeleyPlugin
             delete_option($plugin_slug . '-db_version');
         } catch (Exception $ex) {
             echo $ex->getMessage();
-        }
+        }*/
     }
 
     /**
