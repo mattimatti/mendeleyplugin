@@ -178,12 +178,12 @@ class WaauMendeleyPluginAdmin
             return;
         }
         
-        $screen = get_current_screen();
-        if ($this->plugin_screen_hook_suffix == $screen->id) {
-            wp_enqueue_script($this->plugin_slug . '-admin-script', plugins_url('assets/js/admin.js', __FILE__), array(
-                'jquery'
-            ), WaauMendeleyPlugin::VERSION);
-        }
+//         $screen = get_current_screen();
+//         if ($this->plugin_screen_hook_suffix == $screen->id) {
+//             wp_enqueue_script($this->plugin_slug . '-admin-script', plugins_url('assets/js/admin.js', __FILE__), array(
+//                 'jquery'
+//             ), WaauMendeleyPlugin::VERSION);
+//         }
     }
 
     /* ------------------------------------------------------------------------ *
