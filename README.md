@@ -2,8 +2,8 @@
 
 #### Releases
 
-Le  [releases](../../releases) nel repo github sono incrementali e pronte per essere pubblicate su qualsiasi stanza di wordpress.
-Non contengono le dipendenze di dev.
+Le  [releases](../../releases) nel repo github sono incrementali e pronte per essere pubblicate su qualsiasi istanza di wordpress.
+Non contengono tutti i files in questo repositorio ma solo quelli necessari per wordpress.
 
 
 #### Backend
@@ -34,7 +34,7 @@ Il servizio ricerca nei campi indicizzati precedentemente e ritorna i risultati 
 
 il codice html del front end si trova nel file [gui.html](../master/includes/gui.html) con dei templates di tipo underscore 
 
-[referenza templates underscore](http://2ality.com/2012/06/underscore-templates.html)
+
 
 viene iniettato anche un [js](../master/public/assets/js/dist/app.js) che dipende da [underscorejs](http://underscorejs.org/) e jquery 
 
@@ -42,6 +42,24 @@ viene iniettato anche un [css](../master/public/assets/css/dist/app.css) (compil
 
 
 
+#### Pubblicare una release
+
+Il processo di pubblicare una release dipende da grunt. grunt si incarica di aggiornare la versione del plugin, aggiornare questo repo, creare una tag e un pacchetto zip distribuibile.
+
+* Clonare il progetto `git@github.com:mattimatti/mendeleyplugin.git`
+* Entrare nella cartella clonata `cd mendeleyplugin`
+* Installare grunt `npm -ig grunt-cli`
+* Installare le dipendenze node `npm -i`
+* Eseguire grunt deploy `grunt deploy`
+
+
+#### Referenze
+
+* [referenza templates underscore](http://2ality.com/2012/06/underscore-templates.html)
+* [mendeley api documents](https://dev.mendeley.com/methods/#retrieving-documents)
+* [mendeley api groups](https://dev.mendeley.com/methods/#retrieving-groups)
+* [collab mendeley plugin](https://github.com/collab-uniba/wp-mendeleyplugin)
+* [mendeley](https://www.mendeley.com/)
 
 
 
