@@ -30,11 +30,13 @@
 		<?php submit_button( 'Save keys to DB' ); ?>
 	</form>
 
-	<h2>Access Token</h2>
+	
 	<?php
 
 	$options = get_option( $this->plugin_slug );
 	$groups = get_option($this->plugin_slug . '-groups');
+	
+	$html = '';
 
 	if ( isset( $options['access_token'] ) ) {
 	    
@@ -75,17 +77,24 @@
 		$html .= '</form>';
 
 	} else {
-		$html = '<p><em>No access token have been requested for this account</em></p>';
-		$html .= '<p><em>When API key are stored in the db you can request your <b>Mendeley access token</b></em></p>';
-		
-		$html .= '<form action="' . admin_url( "admin.php" ) . '" method="post">';
-		
-		$html .= '<input type="hidden" name="action" value="request_token"/>';
-		$html .= '<input type="submit" value="Request Access token" class="button-primary" ';
-		$html .= ( $options['client_id'] == '' || $options['client_secret'] == '' ) ? "disabled" : "";
-		$html .= '" />';
-		
-		$html .= '</form>';
+	    
+	    $html = '';
+	    
+	    if ( !empty( $options['client_id'] ) && !empty( $options['client_secret'] ) ) {
+	        
+    		$html .= '<h2>Access Token</h2>';
+    		$html .= '<p><em>No access token have been requested for this account</em></p>';
+    		$html .= '<p><em>When API key are stored in the db you can request your <b>Mendeley access token</b></em></p>';
+    		
+    		$html .= '<form action="' . admin_url( "admin.php" ) . '" method="post">';
+    		
+    		$html .= '<input type="hidden" name="action" value="request_token"/>';
+    		$html .= '<input type="submit" value="Request Access token" class="button-primary" ';
+    		$html .= ( $options['client_id'] == '' || $options['client_secret'] == '' ) ? "disabled" : "";
+    		$html .= '" />';
+    		
+    		$html .= '</form>';
+	    }
 		
 	}
 	echo $html;
