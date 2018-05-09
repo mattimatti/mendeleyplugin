@@ -342,7 +342,7 @@ class WaauMendeleyPluginAdmin
         if (isset($_GET['code'])) {
             $this->store_access_token($_GET['code']);
         }
-        include_once (MENDELEY__PLUGIN_DIR.'views/admin.php');
+        include_once (MENDELEY__PLUGIN_DIR.'admin/views/admin.php');
     }
 
     /**
