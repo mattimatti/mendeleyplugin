@@ -6,7 +6,7 @@ provision
 wp-cli
 wp-cli.yml
 ./dist
-vendor
+/vendor
 
 ansible.cfg
 Vagrantfile
