@@ -4,7 +4,7 @@
  * Plugin Name: Waau Mendeley Wordpress Plugin
  * Plugin URI: https://github.com/mattimatti/mendeleyplugin
  * Description: This plugin allows connecting to Mendeley® and searching group documents
- * Version: 1.0.33
+ * Version: 1.0.34
  * Author: Matteo Monti, credits to Davide Parisi, Nicola Musicco
  * Author URI: http://waau.it
  * License: MIT
@@ -25,9 +25,9 @@ if (! defined('WPINC')) {
 require_once MENDELEY__PLUGIN_DIR . 'plugin-update-checker/plugin-update-checker.php';
 
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-    'https://github.com/mattimatti/mendeleyplugin/',
+    'https://github.com/mattimatti/waau-mendeleyplugin/',
     __FILE__,
-    'waau-mendeley-plugin'
+    'waau-mendeley-plugin.php'
     );
 
 //Optional: If you're using a private repository, specify the access token like this:
