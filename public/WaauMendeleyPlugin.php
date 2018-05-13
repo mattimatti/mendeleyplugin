@@ -583,17 +583,16 @@ class WaauMendeleyPlugin
             
             $sql = "SELECT * FROM $table_name WHERE 1=1";
             
-            
             if (isset($params['query'])) {
                 
                 // split the query
                 
                 $query = trim($params['query']);
-                
                 $terms = explode(' ', $query);
                 
                 foreach ($terms as $term) {
-                    if(count($term) > 2){
+                    $term = trim($term);
+                    if (strlen($term) > 2) {
                         $sql .= " AND fullsearch LIKE '%$term%' ";
                     }
                 }
@@ -609,7 +608,17 @@ class WaauMendeleyPlugin
             foreach ($results as $doc) {
                 
                 $dedoc = json_decode($doc->serialized, 1);
-                $data['items'][] = $this->formatDocument($dedoc);
+                
+                $thedoc = $this->formatDocument($dedoc);
+                
+                if ($thedoc) {
+                    $data['items'][] = $thedoc;
+                }
+            }
+            
+            
+            if (! is_array($data['items']) || count($data['items']) > 0 ) {
+                throw new Exception("No Documents Found");
             }
             
             $sortfield = 'id';
@@ -759,35 +768,40 @@ class WaauMendeleyPlugin
      */
     private function formatDocument($doc)
     {
-        $doc['authorsstrr'] = '';
-        
-        if (isset($doc['authors'])) {
-            foreach ($doc['authors'] as $author) {
-                $doc['authorsstrr'] .= '';
-                
-                if (isset($author['last_name'])) {
-                    $doc['authorsstrr'] .= $author['last_name'];
-                    if (isset($author['first_name'])) {
-                        $doc['authorsstrr'] .= ' ';
-                        $doc['authorsstrr'] .= $author['first_name'];
-                    }
+        if (isset($doc['title'])) {
+            
+            $doc['authorsstrr'] = '';
+            
+            if (isset($doc['authors'])) {
+                foreach ($doc['authors'] as $author) {
+                    $doc['authorsstrr'] .= '';
                     
-                    $doc['authorsstrr'] .= ', ';
+                    if (isset($author['last_name'])) {
+                        $doc['authorsstrr'] .= $author['last_name'];
+                        if (isset($author['first_name'])) {
+                            $doc['authorsstrr'] .= ' ';
+                            $doc['authorsstrr'] .= $author['first_name'];
+                        }
+                        
+                        $doc['authorsstrr'] .= ', ';
+                    }
                 }
             }
+            
+            $doc['authors'] = $doc['authorsstrr'];
+            unset($doc['authorsstrr']);
+            
+            $doc['short'] = (isset($doc['abstract'])) ? $doc['abstract'] : '';
+            $doc['short'] = $this->limitText($doc['short'], 80);
+            
+            $doc['publication'] = $doc['title'];
+            unset($doc['title']);
+            
+            $doc['viewurl'] = '?mendeleyview&id=' . $doc['id'];
+            return $doc;
         }
         
-        $doc['authors'] = $doc['authorsstrr'];
-        unset($doc['authorsstrr']);
-        
-        $doc['short'] = (isset($doc['abstract'])) ? $doc['abstract'] : '';
-        $doc['short'] = $this->limitText($doc['short'], 80);
-        
-        $doc['publication'] = $doc['title'];
-        unset($doc['title']);
-        
-        $doc['viewurl'] = '?mendeleyview&id=' . $doc['id'];
-        return $doc;
+        return null;
     }
 
     /**
