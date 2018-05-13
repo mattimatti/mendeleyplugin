@@ -5,7 +5,7 @@
 		<div class="publication"><%= item.title %></div>
 		<div class="authors"><%= item.authors %></div>
 		<div class="abstract">
-			<a class="view" data-id="<%= item.id %>"><%= item.publication %> <%= item.year %></a>
+			<a class="view" data-id="<%= item.id %>">Request File</a><span><%= item.publication %> <%= item.year %></span>
 			<div class="fileinfo"></div>
 		</div>
 
@@ -17,7 +17,7 @@
 
 
 <script id="fileinfotemplate" type="text/template">
-<a title="<%= item.file_name %>" class="download btn" target="_blank" href="?mendeleydownload&id=<%= item.id %>" data-id="<%= item.id %>" >download file</a>
+<a title="<%= item.file_name %>" class="download btn" target="_blank" href="?mendeleydownload&id=<%= item.id %>" data-id="<%= item.id %>" >Download file</a>
 <%= item.sizestr %>
 </script>
 
@@ -27,6 +27,7 @@
 
 	<form id="mendeleyform" method="get" action="">
 		<input type="text" id="query" name="query" placeholder="type your full text search here" />
+		<span><button type="submit">Search</button></span>
 		<input type="hidden" id="sortfield" name="sortfield" value="publication" />
 		<input type="hidden" id="sortdirection" name="sortdirection" value="asc" />
 		<input type="hidden" id="sortdirection" name="sortdirection" value="title" />

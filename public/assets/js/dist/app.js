@@ -54,9 +54,9 @@
 	    var $sortdirection = $('#sortdirection');
 
 	    // prevent submit
-	    $("#mendeleyform").submit(function(e) {
-		e.preventDefault();
-	    });
+	//    $("#mendeleyform").submit(function(e) {
+	//	e.preventDefault();
+	//    });
 
 	    $sorters.prop('data-direction', '');
 
