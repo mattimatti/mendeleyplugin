@@ -269,7 +269,6 @@ class WaauMendeleyPluginAdmin
     {
         $options = $this->plugin->get_options();
         
-        
         $groups = get_option($this->plugin_slug . '-groups');
         
         $gid = (isset($options['group_id'])) ? $options['group_id'] : '';
@@ -539,14 +538,14 @@ class WaauMendeleyPluginAdmin
         
         $client->reset_group_publications();
         
-        $this->plugin->update_options(array(
-            'client_id' => '',
-            'client_secret' => '',
-            'group_id' => '',
-            'cache' => false
-        ));
+//         $this->plugin->update_options(array(
+//             'client_id' => '',
+//             'client_secret' => '',
+//             'group_id' => '',
+//             'cache' => false
+//         ));
         
-        update_option($this->plugin_slug . '-groups', null);
+//         update_option($this->plugin_slug . '-groups', null);
         
         wp_redirect($url);
         
