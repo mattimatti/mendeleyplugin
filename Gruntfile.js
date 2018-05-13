@@ -64,7 +64,7 @@ module.exports = function(grunt) {
 		expand : true,
 		cwd : '.',
 		src : [ '*.php', 'img/**/*', 'public/**/*', 'includes/**/*', 'languages/**/*', 'admin/**/*',
-			'assets/**/*', 'doc/**/*' ],
+			'plugin-update-checker/**/*', 'assets/**/*', 'doc/**/*' ],
 		dest : './wordpress/wp-content/plugins/mendeleyplugin/',
 	    },
 	},
@@ -112,7 +112,6 @@ module.exports = function(grunt) {
 	    }
 	},
 
-	
 	availabletasks : {
 	    tasks : {
 		options : {
@@ -121,18 +120,18 @@ module.exports = function(grunt) {
 		}
 	    }
 	},
-	
-	'git-archive': {
-            archive: {
-                options: {
-                    'output'  : 'mendeleyplugin.zip',
-                    'tree-ish': 'master',
-                    'worktree-attributes'   : true,
-                    'format'  : 'zip'
-                }
-            }
-        },
-        
+
+	'git-archive' : {
+	    archive : {
+		options : {
+		    'output' : 'mendeleyplugin.zip',
+		    'tree-ish' : 'master',
+		    'worktree-attributes' : true,
+		    'format' : 'zip'
+		}
+	    }
+	},
+
 	// ftpush : {
 	// build : {
 	// auth : {
