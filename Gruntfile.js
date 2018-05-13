@@ -172,7 +172,7 @@ module.exports = function(grunt) {
     grunt.registerTask("test", [ "build", "clean", "copy" ]);
     grunt.registerTask("cleantest", [ "clean" ]);
     grunt.registerTask("bumpversion", [ 'bump-only', 'regex-replace' ]);
-    grunt.registerTask('deploy', [ 'build', 'bumpversion', 'changelog', 'bump-commit' ]);
+    grunt.registerTask('deploy', [ 'build', 'changelog', 'bumpversion', 'bump-commit' ]);
     grunt.registerTask('release', [ 'deploy' ]);
 
 };
