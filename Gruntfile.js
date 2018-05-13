@@ -104,7 +104,7 @@ module.exports = function(grunt) {
 		commitMessage : 'Release v%VERSION%',
 		commitFiles : [ '-a' ],
 		createTag : true,
-		tagName : 'v%VERSION%',
+		tagName : grunt.file.read('CHANGELOG.md'),
 		tagMessage : 'Version %VERSION% \n\n' + grunt.file.read('CHANGELOG.md'),
 		push : true,
 		pushTo : 'origin',
