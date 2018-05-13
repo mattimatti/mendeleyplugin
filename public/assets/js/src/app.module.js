@@ -88,19 +88,32 @@ jQuery(document).ready(function() {
 
 	var html = '';
 	var template = _.template($('#fileinfotemplate').html());
+	
 	var $container = $elm.find('.fileinfo');
 	
 	
-	$container.empty();
-
-	_.each(data.items, function(item) {
-	    html += template({
-		item : item
-	    });
-
-	    $container.append(html);
-
-	})
+	if(data.items.length > 0){
+	    
+	    
+	    $container.empty();
+	    
+	    _.each(data.items, function(item) {
+		html += template({
+		    item : item
+		});
+		
+		$container.append(html);
+		
+	    })
+	    
+	    
+	}else{
+	    
+	    console.debug(data.items[0]);
+	    
+	}
+	
+	
 
     };
 
@@ -159,7 +172,7 @@ jQuery(document).ready(function() {
      */
     var debounced = _.debounce(function(e) {
 	loadData();
-    }, 1000);
+    }, 2000);
 
     $input.on('keyup', debounced);
     $sorters.click(handleSorting);

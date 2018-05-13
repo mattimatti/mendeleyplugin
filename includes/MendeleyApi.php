@@ -393,6 +393,8 @@ class MendeleyApi
         
         $file = $this->fetch($url, $params);
         
+//         var_dump($file);
+        
         if ($file['code'] == 200) {
             return $file['result'];
         }

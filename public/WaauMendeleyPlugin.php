@@ -17,7 +17,7 @@ class WaauMendeleyPlugin
      *
      * @var     string
      */
-    const VERSION = '1.0.42';
+    const VERSION = '1.0.43';
 
     /**
      *
@@ -500,7 +500,7 @@ class WaauMendeleyPlugin
      * 
      * @param bool $refreshToken
      */
-    public function getClient()
+    public function getClientOld()
     {
         // get the stored options
         $options = $this->get_options();
@@ -520,6 +520,92 @@ class WaauMendeleyPlugin
             $options['access_token'] = $tokendata;
             $this->update_options($options);
         }
+        
+        return $client;
+    }
+
+    /**
+     * 
+     * @return MendeleyApi
+     */
+    public function getClient()
+    {
+        $options = $this->get_options();
+        $client = null;
+        
+        if (isset($options['access_token'])) {
+            
+            // access token is set (we have expire time)
+            if (isset($options['expire_time'])) {
+                if (time() > $options['expire_time']) {
+                    $client = $this->refresh_token();
+                }
+            }
+        }
+        
+        $options = $this->get_options();
+        
+        if (! $client) {
+            $client = $this->set_up_client();
+        }
+        
+        $client = $this->set_up_client($options);
+        $client->set_callback_url(admin_url('options-general.php?page=' . $this->plugin_slug));
+        
+        $token_data_array = $options['access_token']['result'];
+        
+        $token = $token_data_array['access_token'];
+        $client->set_client_access_token($token);
+        
+        return $client;
+    }
+
+    /*------------------------------------------------------------------------------
+     *
+     * Private Functions/utilities
+     *
+     -----------------------------------------------------------------------------*/
+    private function set_up_client($options = null)
+    {
+        if (! $options) {
+            $options = $this->get_options();
+        }
+        
+        $client = MendeleyApi::get_instance();
+        $client->setOptions($options);
+        $client->set_up($options['client_id'], $options['client_secret'], admin_url('options-general.php?page=' . $this->plugin_slug));
+        $client->init();
+        
+        return $client;
+    }
+
+    /**
+     *
+     * @return MendeleyApi
+     */
+    public function refresh_token()
+    {
+        $options = $this->get_options();
+        
+        // setup the client
+        $client = $this->set_up_client($options);
+        
+        $result = $options['access_token']['result'];
+        $refresh_token = $result['refresh_token'];
+        
+        $new_token = $client->refresh_access_token($refresh_token);
+        
+        $options['access_token'] = $new_token;
+        
+        $access_token_data = $options['access_token']['result'];
+        
+        // update expire time
+        $expire_time = (time() + $access_token_data['expires_in']);
+        $expire_time_humanized = date('d-n-Y H:i:s', $expire_time);
+        $options['expire_time'] = $expire_time;
+        $options['et_humanized'] = $expire_time_humanized;
+        
+        $this->update_options($options);
         
         return $client;
     }
@@ -616,8 +702,7 @@ class WaauMendeleyPlugin
                 }
             }
             
-            
-            if (! is_array($data['items']) || count($data['items']) > 0 ) {
+            if (! is_array($data['items']) || count($data['items']) > 0) {
                 throw new Exception("No Documents Found");
             }
             
@@ -791,11 +876,13 @@ class WaauMendeleyPlugin
             $doc['authors'] = $doc['authorsstrr'];
             unset($doc['authorsstrr']);
             
-            $doc['short'] = (isset($doc['abstract'])) ? $doc['abstract'] : '';
-            $doc['short'] = $this->limitText($doc['short'], 80);
+            // $doc['short'] = (isset($doc['abstract'])) ? $doc['abstract'] : '';
+            // $doc['short'] = $this->limitText($doc['short'], 80);
             
-            $doc['publication'] = $doc['title'];
-            unset($doc['title']);
+            $doc['publication'] = '';
+            if (isset($doc['source'])) {
+                $doc['publication'] = $doc['source'];
+            }
             
             $doc['viewurl'] = '?mendeleyview&id=' . $doc['id'];
             return $doc;

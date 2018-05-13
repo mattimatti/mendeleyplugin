@@ -1,14 +1,16 @@
 
 <script id="rowtemplate" type="text/template">
 <tr>
-	<td class="files">
-		<a class="view myButton" data-id="<%= item.id %>">view files</a>
-		<div class="fileinfo"></div>
-	</td>
-	<td colspan="2">
-		<div class="publication"><%= item.publication %></div>
+	<td colspan="">
+		<div class="publication"><%= item.title %></div>
 		<div class="authors"><%= item.authors %></div>
-		<div class="abstract"><%= item.short %></div>
+		<div class="abstract">
+			<a class="view" data-id="<%= item.id %>"><%= item.publication %> <%= item.year %></a>
+			<div class="fileinfo"></div>
+		</div>
+
+		
+
 	</td>
 </tr>
 </script>
@@ -27,13 +29,18 @@
 		<input type="text" id="query" name="query" placeholder="type your full text search here" />
 		<input type="hidden" id="sortfield" name="sortfield" value="publication" />
 		<input type="hidden" id="sortdirection" name="sortdirection" value="asc" />
+		<input type="hidden" id="sortdirection" name="sortdirection" value="title" />
+		<input type="hidden" id="sortdirection" name="sortdirection" value="year" />
 	</form>
 	
 	<table class="table table-striped">
 		<thead>
-			<th>Order by:</th>
-			<th><a class="sorter" data-field="authors" data-direction="" href="javascript:;">Author</a></th>
-			<th><a class="sorter" data-field="publication" data-direction="" href="javascript:;">Publication</a></th>
+			<th>Order by:&nbsp;&nbsp;&nbsp;
+			<a class="sorter" data-field="authors" data-direction="" href="javascript:;">Author</a>&nbsp;&nbsp;
+			<a class="sorter" data-field="publication" data-direction="" href="javascript:;">Publication</a>&nbsp;&nbsp;
+			<a class="sorter" data-field="title" data-direction="" href="javascript:;">Title</a>&nbsp;&nbsp;
+			<a class="sorter" data-field="year" data-direction="" href="javascript:;">Year</a>&nbsp;
+			</th>
 		</thead>
 		<tbody id="results">
 			
