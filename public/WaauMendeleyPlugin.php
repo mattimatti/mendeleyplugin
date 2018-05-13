@@ -489,16 +489,18 @@ class WaauMendeleyPlugin
      */
     public function loadDocumentFile($doc_id)
     {
-        $client = $this->getClient(true);
+        $client = $this->getClient();
         
-        return $client->get_file_info($doc_id);
+        $info = $client->get_file_info($doc_id);
+        
+        return $info;
     }
 
     /**
      * 
      * @param bool $refreshToken
      */
-    public function getClient($refreshToken = true)
+    public function getClient()
     {
         // get the stored options
         $options = $this->get_options();
@@ -543,7 +545,7 @@ class WaauMendeleyPlugin
      */
     private function get_remote_publications($params = array())
     {
-        $client = $this->getClient(true);
+        $client = $this->getClient();
         
         $options = $this->get_options();
         if (false == $options) { // if cannot get options
@@ -581,9 +583,20 @@ class WaauMendeleyPlugin
             
             $sql = "SELECT * FROM $table_name WHERE 1=1";
             
+            
             if (isset($params['query'])) {
+                
+                // split the query
+                
                 $query = trim($params['query']);
-                $sql .= " AND fullsearch LIKE '%$query%'";
+                
+                $terms = explode(' ', $query);
+                
+                foreach ($terms as $term) {
+                    if(count($term) > 2){
+                        $sql .= " AND fullsearch LIKE '%$term%' ";
+                    }
+                }
             }
             
             // retrunan object collection
@@ -631,7 +644,7 @@ class WaauMendeleyPlugin
         if (isset($_GET['mendeleydownload'])) {
             $params = $_GET;
             
-            $client = $this->getClient(true);
+            $client = $this->getClient();
             $client->setOptions($this->get_options());
             $info = $client->get_file($params['id']);
             

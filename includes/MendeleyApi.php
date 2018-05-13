@@ -105,6 +105,13 @@ class MendeleyApi
         exit();
     }
 
+    /**
+     * get a long lived access code..
+     * 
+     * @see https://dev.mendeley.com/reference/topics/authorization_auth_code.html
+     * @param unknown $auth_code
+     * @return array
+     */
     public function get_access_token($auth_code)
     {
         // set request parameters
@@ -117,13 +124,17 @@ class MendeleyApi
         return $response;
     }
 
+    /**
+     * 
+     * @param unknown $access_token
+     */
     public function set_client_access_token($access_token)
     {
         $this->client->setAccessToken($access_token);
     }
 
     /**
-     * 
+     * @see https://dev.mendeley.com/reference/topics/authorization_auth_code.html
      * @param unknown $refresh_token
      * @return array
      */
@@ -138,6 +149,11 @@ class MendeleyApi
         return $response;
     }
 
+    /**
+     * Utility function to parse headers looking for links.
+     * @param unknown $linkHeader
+     * @return number[]|unknown[]|mixed[]
+     */
     public function parseLinkHeader($linkHeader)
     {
         preg_match('/<([^>]+)>;\s*rel=[\'"]([a-z]*)[\'"]/', $linkHeader, $matches);
@@ -149,10 +165,9 @@ class MendeleyApi
             'rel' => $matches[2]
         ];
     }
-    
-    
+
     /**
-     * 
+     * Truncate the db tabel with publications
      */
     public function reset_group_publications()
     {
@@ -171,10 +186,6 @@ class MendeleyApi
      */
     public function index_group_publications($params = array())
     {
-        global $wpdb;
-        
-        $table_name = WaauMendeleyPlugin::get_instance()->get_db_tablename();
-        
         $options = $this->getOptions();
         
         // set the pagesize
@@ -187,47 +198,52 @@ class MendeleyApi
             throw new Exception("Group Id Must be specified");
         }
         
-        // $publications = $this->get_group_publications($params);
         $publications = $this->get_group_publications_recursive($params);
         
-        // TODO: iterate all pages in order to get all the publications..
-        $howmanyPublications = count($publications);
-        // exit("loaded $howmanyPublications publications \n");
-        
-        // $records = $wpdb->get_results("SELECT * FROM $table_name");
-        
-        // clanup the table
-        $wpdb->query("TRUNCATE $table_name");
+        $this->reset_group_publications();
         
         foreach ($publications as $publication) {
             
-            $documentid = $publication['id'];
-            
-            $serialized = json_encode($publication);
-            $deserialized = json_decode($serialized, true);
-            
-            $this->unsetKeys($deserialized, 'website');
-            $this->unsetKeys($deserialized, 'volume');
-            $this->unsetKeys($deserialized, 'issue');
-            $this->unsetKeys($deserialized, 'last_modified');
-            $this->unsetKeys($deserialized, 'created');
-            $this->unsetKeys($deserialized, 'type');
-            $this->unsetKeys($deserialized, 'profile_id');
-            $this->unsetKeys($deserialized, 'group_id');
-            
-            // flatten recursively to array values
-            $deserialized = $this->array_values_recursive($deserialized);
-            
-            $fullsearch = implode(', ', $deserialized);
-            
-            $fullsearch = addslashes($fullsearch);
-            $serialized = addslashes($serialized);
-            
-            $wpdb->query("INSERT INTO $table_name (documentid, fullsearch, serialized) VALUES ('" . $documentid . "','" . $fullsearch . "','" . $serialized . "')");
+            $this->index_publication($publication);
         }
         
-        
         return $publications;
+    }
+
+    /**
+     * Parse and store a publication in database for fulltext lookup
+     * 
+     * @param array $publication
+     */
+    public function index_publication(array $publication)
+    {
+        global $wpdb;
+        
+        $table_name = WaauMendeleyPlugin::get_instance()->get_db_tablename();
+        
+        $documentid = $publication['id'];
+        
+        $serialized = json_encode($publication);
+        $deserialized = json_decode($serialized, true);
+        
+        $this->unsetKeys($deserialized, 'website');
+        $this->unsetKeys($deserialized, 'volume');
+        $this->unsetKeys($deserialized, 'issue');
+        $this->unsetKeys($deserialized, 'last_modified');
+        $this->unsetKeys($deserialized, 'created');
+        $this->unsetKeys($deserialized, 'type');
+        $this->unsetKeys($deserialized, 'profile_id');
+        $this->unsetKeys($deserialized, 'group_id');
+        
+        // flatten recursively to array values
+        $deserialized = $this->array_values_recursive($deserialized);
+        
+        $fullsearch = implode(', ', $deserialized);
+        
+        $fullsearch = addslashes($fullsearch);
+        $serialized = addslashes($serialized);
+        
+        $wpdb->query("INSERT INTO $table_name (documentid, fullsearch, serialized) VALUES ('" . $documentid . "','" . $fullsearch . "','" . $serialized . "')");
     }
 
     /**
@@ -312,9 +328,6 @@ class MendeleyApi
         return $documents;
     }
 
-    
-    
-    
     public function get_document($id)
     {
         $url = self::API_ENDPOINT . 'documents/' . $id;
@@ -334,7 +347,7 @@ class MendeleyApi
         
         if ($data['code'] = 200) {
             return $data['result'];
-        }else{
+        } else {
             throw new Exception($data['result']);
         }
         
@@ -380,11 +393,11 @@ class MendeleyApi
         
         $file = $this->fetch($url, $params);
         
-        if ($file['code'] = 200) {
+        if ($file['code'] == 200) {
             return $file['result'];
         }
         
-        return null;
+        return array();
     }
 
     /**
@@ -394,7 +407,7 @@ class MendeleyApi
     public function get_account_info()
     {
         $url = self::API_ENDPOINT . 'profiles/me';
-        $info = $this->client->fetch($url);
+        $info = $this->fetch($url);
         
         if ($info['code'] == 200) {
             return $info['result'];
@@ -450,6 +463,7 @@ class MendeleyApi
         $token_data_array = $options['access_token'];
         
         if (isset($token_data_array['refresh_token'])) {
+            
             if (time() > $options['expire_time']) {
                 
                 $token_data_array = $this->refresh_access_token($token_data_array['refresh_token']);

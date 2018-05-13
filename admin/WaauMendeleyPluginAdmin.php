@@ -84,6 +84,16 @@ class WaauMendeleyPluginAdmin
             'request_access_token'
         ));
         
+        add_action('admin_action_refresh_token', array(
+            $this,
+            'refresh_access_token'
+        ));
+        
+        add_action('admin_action_do_expire_access_token', array(
+            $this,
+            'do_expire_access_token'
+        ));
+        
         add_action('admin_action_load_groups', array(
             $this,
             'load_user_groups'
@@ -93,7 +103,7 @@ class WaauMendeleyPluginAdmin
             $this,
             'import_group_publications'
         ));
-
+        
         add_action('admin_action_reset_all_data', array(
             $this,
             'reset_all_data'
@@ -183,12 +193,12 @@ class WaauMendeleyPluginAdmin
             return;
         }
         
-//         $screen = get_current_screen();
-//         if ($this->plugin_screen_hook_suffix == $screen->id) {
-//             wp_enqueue_script($this->plugin_slug . '-admin-script', plugins_url('assets/js/admin.js', __FILE__), array(
-//                 'jquery'
-//             ), WaauMendeleyPlugin::VERSION);
-//         }
+        // $screen = get_current_screen();
+        // if ($this->plugin_screen_hook_suffix == $screen->id) {
+        // wp_enqueue_script($this->plugin_slug . '-admin-script', plugins_url('assets/js/admin.js', __FILE__), array(
+        // 'jquery'
+        // ), WaauMendeleyPlugin::VERSION);
+        // }
     }
 
     /* ------------------------------------------------------------------------ *
@@ -206,7 +216,6 @@ class WaauMendeleyPluginAdmin
         return apply_filters('default_keys_options', $defaults);
     }
 
-    
     /**
      * 
      */
@@ -214,8 +223,7 @@ class WaauMendeleyPluginAdmin
     {
         
         // resetta gli access tokens?
-        //add_option($this->plugin_slug, apply_filters('default_keys_options', $this->default_keys_options()));
-        
+        // add_option($this->plugin_slug, apply_filters('default_keys_options', $this->default_keys_options()));
         add_settings_section('waau_mendeley_settings_section', 'API Key Setting', array(
             $this,
             'options_callback'
@@ -237,7 +245,7 @@ class WaauMendeleyPluginAdmin
         
         $groups = get_option($this->plugin_slug . '-groups');
         
-        if($groups){
+        if ($groups) {
             add_settings_field('group_id', 'Group Id', array(
                 $this,
                 'demo_select_display'
@@ -245,7 +253,6 @@ class WaauMendeleyPluginAdmin
                 'Insert the group id'
             ));
         }
-        
         
         // add_settings_field("demo-select", "Demo Select Box", "demo_select_display", "demo", "section");
         
@@ -255,39 +262,39 @@ class WaauMendeleyPluginAdmin
         ));
     }
 
-    
     /**
      * 
      */
     function demo_select_display()
     {
         $options = $this->plugin->get_options();
-            
+        
+        
         $groups = get_option($this->plugin_slug . '-groups');
+        
         $gid = (isset($options['group_id'])) ? $options['group_id'] : '';
-            
-?>
+        
+        ?>
 <select name="<?php echo $this->plugin_slug; ?>[group_id]">
-<option value="">Select a group</option>
+	<option value="">Select a group</option>
 <?php
-            if ($groups && is_array($groups)) {
-                foreach ($groups as $group) {
-                    ?>
+        if ($groups && is_array($groups)) {
+            foreach ($groups as $group) {
+                ?>
 				<option value="<?php echo $group['id']; ?>" <?php selected($gid, $group['id']); ?>><?php echo $group['name']; ?></option>
 		<?php
-                } // ed foreach
-            } else {
-                ?>
+            } // ed foreach
+        } else {
+            ?>
 				<option value="">Load Groups</option>
 		<?php
-            }
-            ?>
+        }
+        ?>
 </select>
 
 <!-- <a href="<?php admin_url( "admin.php" ); ?>?action=load_groups">Load groups</a> -->
 
 <?php
-        
     }
 
     public function options_callback()
@@ -320,6 +327,9 @@ class WaauMendeleyPluginAdmin
     // }
     public function validate($input)
     {
+        // var_dump($input);
+        // exit();
+        // $output = $this->plugin->get_options();
         $output = array();
         foreach ($input as $key => $value) {
             if (isset($input[$key])) {
@@ -360,7 +370,8 @@ class WaauMendeleyPluginAdmin
         if (isset($_GET['code'])) {
             $this->store_access_token($_GET['code']);
         }
-        include_once (MENDELEY__PLUGIN_DIR.'admin/views/admin.php');
+        
+        include_once (MENDELEY__PLUGIN_DIR . 'admin/views/admin.php');
     }
 
     /**
@@ -404,11 +415,12 @@ class WaauMendeleyPluginAdmin
     }
 
     /**
-     * 
+     * Request the access token.
      */
     public function request_access_token()
     {
         $options = $this->plugin->get_options();
+        
         if ($options['client_id'] === '' || $options['client_secret'] === '') {
             return;
         }
@@ -420,18 +432,47 @@ class WaauMendeleyPluginAdmin
     }
 
     /**
-     * 
+     * Refresh the access token.
+     */
+    public function refresh_access_token()
+    {
+        $url = admin_url('options-general.php?page=' . $this->plugin_slug);
+        
+        $client = $this->getClient();
+        
+        wp_redirect($url);
+        
+        exit();
+    }
+
+    /**
+     * Refresh the access token.
+     */
+    public function do_expire_access_token()
+    {
+        $url = admin_url('options-general.php?page=' . $this->plugin_slug);
+        
+        $this->expire_access_token();
+        
+        wp_redirect($url);
+        
+        exit();
+    }
+
+    /**
+     * Load the user groups tiwd to the authenticated user.
+     * We need them in order to 
      */
     public function load_user_groups()
     {
-        $url = $_SERVER['HTTP_REFERER'];
+        $url = admin_url('options-general.php?page=' . $this->plugin_slug);
         
         $options = $this->plugin->get_options();
         if ($options['client_id'] === '' || $options['client_secret'] === '') {
             return;
         }
         
-        $client = $this->getClient(true);
+        $client = $this->getClient();
         
         // Redirect to mendeley login page
         $groups = $client->load_groups();
@@ -447,52 +488,54 @@ class WaauMendeleyPluginAdmin
 
     /**
      * 
-     * @param string $refreshToken
      * @return void|string|MendeleyApi
      */
-    public function getClient($refreshToken = true)
+    public function getClient()
     {
         $options = $this->plugin->get_options();
+        $client = null;
         
-        if (! isset($options) || false == $options) { // if cannot get options
-            return; // exit and do nothing
-        }
-        
-        if (! isset($options['expire_time'])) {
+        if (! isset($options['access_token'])) {
             return $this->request_access_token();
-        }
-        
-        if (isset($options['expire_time'])) {
+        } else {
             
-            if (time() > $options['expire_time']) {
-                $this->refresh_token();
-                $options = $this->plugin->get_options();
+            // access token is set (we have expire time)
+            if (isset($options['expire_time'])) {
+                if (time() > $options['expire_time']) {
+                    $client = $this->refresh_token();
+                }
             }
         }
         
-        $token_data_array = $options['access_token']['result'];
+        $options = $this->plugin->get_options();
         
-        if (! isset($token_data_array)) {
-            return "must authenticate";
+        if (! $client) {
+            $client = $this->set_up_client();
         }
         
         $client = $this->set_up_client($options);
         $client->set_callback_url(admin_url('options-general.php?page=' . $this->plugin_slug));
+        
+        $token_data_array = $options['access_token']['result'];
         
         $token = $token_data_array['access_token'];
         $client->set_client_access_token($token);
         
         return $client;
     }
-    
-    
-    public function reset_all_data(){
+
+    /**
+     * Reset all data..
+     *   groups
+     *   publications
+     * 
+     * @return boolean
+     */
+    public function reset_all_data()
+    {
+        $url = admin_url('options-general.php?page=' . $this->plugin_slug);
         
-        $url = $_SERVER['HTTP_REFERER'];
-        
-        $options = $this->plugin->get_options();
-        
-        $client = $this->getClient(true);
+        $client = $this->getClient();
         
         $client->reset_group_publications();
         
@@ -503,9 +546,7 @@ class WaauMendeleyPluginAdmin
             'cache' => false
         ));
         
-        
         update_option($this->plugin_slug . '-groups', null);
-        
         
         wp_redirect($url);
         
@@ -517,14 +558,14 @@ class WaauMendeleyPluginAdmin
      */
     public function import_group_publications()
     {
-        $url = $_SERVER['HTTP_REFERER'];
+        $url = admin_url('options-general.php?page=' . $this->plugin_slug);
         
         $options = $this->plugin->get_options();
         
         // $author_info = $client->get_account_info();
         // update_option($this->plugin_slug . '-account-info', $author_info);
         
-        $client = $this->getClient(true);
+        $client = $this->getClient();
         try {
             //
             $publications = $client->index_group_publications();
@@ -549,6 +590,7 @@ class WaauMendeleyPluginAdmin
     /**
      * 
      * @param string $auth_code
+     * @return MendeleyApi
      */
     public function store_access_token($auth_code)
     {
@@ -558,7 +600,7 @@ class WaauMendeleyPluginAdmin
         
         $access_token = $client->get_access_token($auth_code);
         
-        if ($access_token['code'] === 200) {
+        if ($access_token['code'] == 200) {
             $options['access_token'] = $access_token;
             $access_token_data = $options['access_token']['result'];
             $expire_time = (time() + $access_token_data['expires_in']);
@@ -567,8 +609,13 @@ class WaauMendeleyPluginAdmin
             $options['et_humanized'] = $expire_time_humanized;
             $this->plugin->update_options($options);
         }
+        
+        return $client;
     }
 
+    /**
+     * 
+     */
     public function check_access_token()
     {
         $options = $this->plugin->get_options();
@@ -579,22 +626,52 @@ class WaauMendeleyPluginAdmin
         }
     }
 
+    /**
+     *
+     */
+    public function expire_access_token()
+    {
+        $options = $this->plugin->get_options();
+        // $access_token_data = $options['access_token']['result'];
+        
+        if (isset($options['expire_time'])) {
+            $expire_time = time() - 3600;
+            $expire_time_humanized = date('d-n-Y H:i:s', $expire_time);
+            $options['expire_time'] = $expire_time;
+            $options['et_humanized'] = $expire_time_humanized;
+            $this->plugin->update_options($options);
+        }
+    }
+
+    /**
+     * 
+     * @return MendeleyApi
+     */
     public function refresh_token()
     {
         $options = $this->plugin->get_options();
         
+        // setup the client
         $client = $this->set_up_client($options);
+        
         $result = $options['access_token']['result'];
         $refresh_token = $result['refresh_token'];
         
-        $client->set_up($options['client_id'], $options['client_secret'], $this->callback_url);
         $new_token = $client->refresh_access_token($refresh_token);
+        
         $options['access_token'] = $new_token;
+        
         $access_token_data = $options['access_token']['result'];
+        
+        // update expire time
         $expire_time = (time() + $access_token_data['expires_in']);
+        $expire_time_humanized = date('d-n-Y H:i:s', $expire_time);
         $options['expire_time'] = $expire_time;
+        $options['et_humanized'] = $expire_time_humanized;
         
         $this->plugin->update_options($options);
+        
+        return $client;
     }
 
     /*------------------------------------------------------------------------------
@@ -602,8 +679,12 @@ class WaauMendeleyPluginAdmin
      * Private Functions/utilities
      *
      -----------------------------------------------------------------------------*/
-    private function set_up_client($options)
+    private function set_up_client($options = null)
     {
+        if (! $options) {
+            $options = $this->plugin->get_options();
+        }
+        
         $client = MendeleyApi::get_instance();
         $client->setOptions($options);
         $client->set_up($options['client_id'], $options['client_secret'], $this->callback_url);
