@@ -136,7 +136,11 @@ module.exports = function(grunt) {
 	changelog: {
 	    sample: {
 	      options: {
-	       fileHeader: '# Changelog'
+	       fileHeader: '',
+	       after : 'v<%= pkg.version %>',
+	       dest: 'CHANGELOG.md',
+	       featureRegex: /^(.*)$/gim,
+	       template: '{{date}}\t{{> features}}'
 	      }
 	    }
 	  },
