@@ -1,6 +1,3 @@
-2018-05-13	NEW:
+2018-05-13	
 
-  - Release v1.0.40
-  - LOG: Removed unneeded assets
-  - Release v1.0.39
-
+  - Improved build tool
