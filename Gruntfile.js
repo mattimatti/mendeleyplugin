@@ -8,6 +8,7 @@ module.exports = function(grunt) {
     grunt.initConfig({
 
 	pkg : grunt.file.readJSON('package.json'),
+	changelog : grunt.file.read('CHANGELOG.md'),
 
 	'phpunit-runner' : {
 	    all : {
@@ -104,7 +105,7 @@ module.exports = function(grunt) {
 		commitFiles : [ '-a' ],
 		createTag : true,
 		tagName : 'v%VERSION%',
-		tagMessage : 'Version %VERSION%',
+		tagMessage : 'Version %VERSION% \n\n' + grunt.file.read('CHANGELOG.md'),
 		push : true,
 		pushTo : 'origin',
 		globalReplace : true
