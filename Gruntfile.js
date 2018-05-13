@@ -1,7 +1,6 @@
 /**
- * 
+ * Manages the build of this plugin.
  */
-
 module.exports = function(grunt) {
 
     require('load-grunt-tasks')(grunt);
@@ -132,36 +131,18 @@ module.exports = function(grunt) {
 	    }
 	},
 
-	
-	changelog: {
-	    sample: {
-	      options: {
-	       fileHeader: '',
-	       after : 'v<%= pkg.version %>',
-	       dest: 'CHANGELOG.md',
-	       featureRegex: /^(.*)$/gim,
-	       template: '{{date}}\t{{> features}}'
-	      }
+	changelog : {
+	    sample : {
+		options : {
+		    fileHeader : '',
+		    after : 'v<%= pkg.version %>',
+		    dest : 'CHANGELOG.md',
+		    featureRegex : /^(.*)$/gim,
+		    template : '{{date}}\t{{> features}}'
+		}
 	    }
-	  },
-	// ftpush : {
-	// build : {
-	// auth : {
-	// host : 'ftp.fornitoreoffresi.com',
-	// port : 21,
-	// authKey : 'key1'
-	// },
-	// src : '.',
-	// dest :
-	// '/www.fornitoreoffresi.com/wp/wp-content/plugins/standselector',
-	// exclusions : [ 'node_modules', '.phpintel', '.grunt', '.DS_Store',
-	// '.ftppass', '.git*',
-	// 'ftpcache.json' ],
-	// simple : true,
-	// cachePath : './ftpcache.json'
-	// }
-	// },
-
+	},
+	
 	"regex-replace" : {
 	    rootplugin : {
 		src : [ './waau-mendeley-plugin.php' ],
