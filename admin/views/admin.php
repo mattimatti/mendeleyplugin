@@ -53,7 +53,7 @@ if (isset($options['access_token'])) {
     $html .= '<br/>';
     
     $html .= '<form action="' . admin_url("admin.php") . '" method="post">';
-    $html .= '<span><button type="submit" name="action"  value="reset_all_data" class="button-primary">Reset all data</button></span>&nbsp;&nbsp;';
+   // $html .= '<span><button type="submit" name="action"  value="reset_all_data" class="button-primary">Reset all data</button></span>&nbsp;&nbsp;';
     
     if (! $expired) {
         
@@ -61,7 +61,7 @@ if (isset($options['access_token'])) {
             
             if (isset($options['group_id'])) {
                 $html .= '<button type="submit" name="action"  value="import_publications" class="button-primary">Index all Publications in group</button>';
-                $html .= '&nbsp;&nbsp;<span><button type="submit" name="action"  value="do_expire_access_token" class="button-primary">Expire access token</button></span>';
+                //$html .= '&nbsp;&nbsp;<span><button type="submit" name="action"  value="do_expire_access_token" class="button-primary">Expire access token</button></span>';
             }
             if (isset($options['last-import'])) {
                 $html .= '<p></p><p class="token-updated">Last indexed: ' . $options['last-import'] . '</p>';
@@ -76,7 +76,7 @@ if (isset($options['access_token'])) {
         }
     } else {
         
-        $html .= '<button type="submit" name="action"  value="refresh_token" class="button-primary">Refresh access token</button>';
+        //$html .= '<button type="submit" name="action"  value="refresh_token" class="button-primary">Refresh access token</button>';
     }
     
     $html .= '</form>';
