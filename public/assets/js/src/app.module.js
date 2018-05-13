@@ -8,9 +8,9 @@ jQuery(document).ready(function() {
     var $sortdirection = $('#sortdirection');
 
     // prevent submit
-//    $("#mendeleyform").submit(function(e) {
-//	e.preventDefault();
-//    });
+    $("#mendeleyform").submit(function(e) {
+	e.preventDefault();
+    });
 
     $sorters.prop('data-direction', '');
 
@@ -88,32 +88,30 @@ jQuery(document).ready(function() {
 
 	var html = '';
 	var template = _.template($('#fileinfotemplate').html());
-	
+
 	var $container = $elm.find('.fileinfo');
-	
-	
-	if(data.items.length > 0){
-	    
-	    
+
+	if (data.items.length > 1) {
+
 	    $container.empty();
-	    
+
 	    _.each(data.items, function(item) {
 		html += template({
 		    item : item
 		});
-		
+
 		$container.append(html);
-		
+
 	    })
-	    
-	    
-	}else{
-	    
-	    console.debug(data.items[0]);
-	    
+
+	} else {
+
+	    var theFile = data.items[0];
+	    console.debug(theFile);
+
+	    window.location.href = "?mendeleydownload&id=" + theFile.id;
+
 	}
-	
-	
 
     };
 
@@ -122,22 +120,33 @@ jQuery(document).ready(function() {
      */
     var printData = function(data) {
 
-	console.debug(data);
+	console.debug('printData', data);
+
 	var $results = $('#results');
 
 	var html = '';
 	var template = _.template($('#rowtemplate').html());
+	
+	
+	//console.debug(_.pluck(data.items, 'id'));
+	
+	var items = data.items;
+	items = _.sortBy(items, data.params.sortfield);
+	
+	if(data.params.sortdirection === 'desc'){
+	    items.reverse();
+	}
+	
 
-	_.each(data.items, function(item) {
+	_.each(items, function(item) {
 	    html += template({
 		item : item
 	    });
 	})
 
-	var $elm = $(html);
-	$results.empty().append($elm);
+	$results.empty().append(html);
 
-	$elm.find('.view').on('click', function(e) {
+	$results.find('.view').on('click', function(e) {
 	    var $elm = $(e.currentTarget);
 	    var params = $elm.data();
 	    console.debug("clicked", e, params);
@@ -148,8 +157,14 @@ jQuery(document).ready(function() {
     /**
      * Prepare loading data
      */
-    var loadData = function() {
+    var loadData = function(e) {
 	var params = $('#mendeleyform').serializeArray();
+
+	if (params.query == '') {
+	    alert('Missing Search Param');
+	    return false;
+	}
+
 	loadTableData(params, printData);
     };
 
@@ -176,5 +191,8 @@ jQuery(document).ready(function() {
 
     $input.on('keyup', debounced);
     $sorters.click(handleSorting);
+
+    // the
+    $("#mendeleyform button").on('click', loadData);
 
 });

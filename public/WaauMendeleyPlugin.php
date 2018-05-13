@@ -706,21 +706,31 @@ class WaauMendeleyPlugin
                 throw new Exception("No Documents Found");
             }
             
-            $sortfield = 'id';
+            $sortfield = null;
+            
             if (isset($params['sortfield'])) {
                 $sortfield = $params['sortfield'];
             }
             
-            $sortorder = null;
+            $sortdirection = null;
+            
             if (isset($params['sortdirection'])) {
-                $sortorder = $params['sortdirection'];
+                $sortdirection = $params['sortdirection'];
             }
             
-            $sorter = new FieldSorter($sortfield, $sortorder);
-            usort($data['items'], array(
-                $sorter,
-                "cmp"
-            ));
+            var_dump($sortfield);
+            var_dump($sortdirection);
+            
+            if($sortfield){
+                // the sorter
+                $sorter = new FieldSorter($sortfield, $sortdirection);
+                
+                // sort by field
+                usort($data['items'], array(
+                    $sorter,
+                    "cmp"
+                ));
+            }
             
             //
         } catch (Exception $ex) {
@@ -871,6 +881,8 @@ class WaauMendeleyPlugin
                         $doc['authorsstrr'] .= ', ';
                     }
                 }
+                
+                $doc['authorsstrr'] = rtrim(trim($doc['authorsstrr']), ',');
             }
             
             $doc['authors'] = $doc['authorsstrr'];
@@ -938,12 +950,23 @@ class FieldSorter
 
     public $order;
 
+    /**
+     * 
+     * @param string $field
+     * @param string $order
+     */
     function __construct($field, $order = 'asc')
     {
         $this->field = $field;
         $this->order = $order;
     }
 
+    /**
+     * 
+     * @param any $a
+     * @param any $b
+     * @return number
+     */
     function cmp($a, $b)
     {
         if ($a[$this->field] == $b[$this->field]) {

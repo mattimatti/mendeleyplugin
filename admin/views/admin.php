@@ -53,7 +53,7 @@ if (isset($options['access_token'])) {
     $html .= '<br/>';
     
     $html .= '<form action="' . admin_url("admin.php") . '" method="post">';
-   $html .= '<span><button type="submit" name="action"  value="reset_all_data" class="button-primary">Clear all indexed publications</button></span>&nbsp;&nbsp;';
+   $html .= '<span><button type="submit" name="action"  value="reset_all_data" class="button-primary">Clear all indexed Publications</button></span>&nbsp;&nbsp;';
     
     if (! $expired) {
         
