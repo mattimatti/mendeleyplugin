@@ -131,7 +131,6 @@ module.exports = function(grunt) {
 	    }
 	},
 
-<<<<<<< HEAD
 	changelog : {
 	    sample : {
 		options : {
@@ -141,17 +140,6 @@ module.exports = function(grunt) {
 		    featureRegex : /^(.*)$/gim,
 		    template : '{{date}}\t{{> features}}'
 		}
-=======
-	
-	changelog: {
-	    sample: {
-	      options: {
-	       fileHeader: '# Changelog',
-	       dest: 'CHANGELOG.md',
-	       featureregex: '/^(.*)changes #\d+:?(.*)$/gim',
-	       template: '{{date}}\n\n{{> features}}'
-	      }
->>>>>>> 2893e2696c1919ebfde669b2947668c4696287bc
 	    }
 	},
 	
