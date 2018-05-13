@@ -234,6 +234,7 @@ class MendeleyApi
         $this->unsetKeys($deserialized, 'type');
         $this->unsetKeys($deserialized, 'profile_id');
         $this->unsetKeys($deserialized, 'group_id');
+        $this->unsetKeys($deserialized, 'abstract');
         
         // flatten recursively to array values
         $deserialized = $this->array_values_recursive($deserialized);
