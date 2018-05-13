@@ -138,7 +138,10 @@ module.exports = function(grunt) {
 		    fileHeader : '',
 		    after : 'v<%= pkg.version %>',
 		    dest : 'CHANGELOG.md',
-		    featureRegex : /^(.*)$/gim,
+		    partials : {
+			features : '\n\n{{#if features}}{{#each features}}{{> feature}}{{/each}}{{else}}{{> empty}}{{/if}}'
+		    },
+		    featureRegex : /^LOG: (.*)$/gim,
 		    template : '{{date}}\t{{> features}}'
 		}
 	    }
