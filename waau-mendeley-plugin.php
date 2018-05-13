@@ -4,7 +4,7 @@
  * Plugin Name: Wauu Mendeley Wordpress Plugin
  * Plugin URI: https://github.com/mattimatti/waau-mendeleyplugin
  * Description: This plugin allows connecting to Mendeley® API and searching documents stored in a given group of documents.
- * Version: 1.0.38
+ * Version: 1.0.39
  * Author: Matteo Monti, credits to Davide Parisi, Nicola Musicco
  * Author URI: http://wauu.it
  * License: MIT
