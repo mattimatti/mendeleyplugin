@@ -101,7 +101,7 @@ module.exports = function(grunt) {
 		files : [ 'package.json' ],
 		updateConfigs : [ 'pkg', 'component' ],
 		commit : true,
-		commitMessage : 'Release v%VERSION%' + grunt.file.read('CHANGELOG.md'),
+		commitMessage : 'Release v%VERSION%',
 		commitFiles : [ '-a' ],
 		createTag : true,
 		tagName : 'v%VERSION%',
