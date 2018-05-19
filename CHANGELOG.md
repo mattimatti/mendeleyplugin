@@ -1,6 +1,3 @@
-2018-05-14	
+2018-05-19	
 
-  - Improved client side sorting
-  - Added search button
-  - Indexer stop indexing abstract field
-  - Reset all publications
+  (none)
