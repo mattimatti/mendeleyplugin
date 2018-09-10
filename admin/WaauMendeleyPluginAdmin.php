@@ -324,6 +324,9 @@ class WaauMendeleyPluginAdmin
     // $html = '<input type="text" id="group_id" name="' . $this->plugin_slug . '[group_id]" value="' . $options['group_id'] . '" />';
     // echo $html;
     // }
+    
+    
+    
     public function validate($input)
     {
         // var_dump($input);
@@ -545,7 +548,7 @@ class WaauMendeleyPluginAdmin
 //             'cache' => false
 //         ));
         
-//         update_option($this->plugin_slug . '-groups', null);
+        update_option($this->plugin_slug . '-groups', null);
         
         wp_redirect($url);
         
